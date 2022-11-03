@@ -5,7 +5,8 @@ using DataAccess.Concrete.InMemory;
 
 CarManagers cars = new CarManagers(new EfCarDal());
 
-foreach (var car in cars.GetAll())
+foreach (var car in cars.GetAll().Data)
 {
     Console.WriteLine(car.Description);
 }
+Console.WriteLine(cars.GetAll().message);

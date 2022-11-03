@@ -1,7 +1,14 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Validaiton;
+using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Result.Abstract;
+using Core.Utilities.Result.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,29 +24,40 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-        public void Add(Car car)
+        [ValidationAspect(typeof(CarValidator))]
+        public IResult Add(Car car)
         {
-            _carDal.Add(car);
+            //var context = new ValidationContext<Car>(car);//validation kuraqlım var diyorsun
+            //CarValidator validationRules = new CarValidator();// instance oluşturyorsun 
+            //var result = validationRules.Validate(context);// istance bu ve iznimde bu diyorsun 
+            //if (!result.IsValid) {
+            //    throw new ValidationException(result.Errors);
+            //}
+            //ValidationTool.Validdate(new CarValidator(), car);
+            _carDal.Add(car);            
+            return new SuccessResult(Message.SuccessAdded);
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             _carDal.Delete(car);
+            return new SuccessResult(Message.SuccessDeleted);
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new DataSuccessResult<List<Car>>(_carDal.GetAll(),Message.SuccessGet);
         }
 
-        public List<CarDto> GetAllCarDto()
+        public IDataResult<List<CarDto>> GetAllCarDto()
         {
-            return _carDal.getCarDto();
+            return new DataSuccessResult<List<CarDto>>(_carDal.getCarDto(), Message.SuccessGet);
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new SuccessResult(Message.SuccessUpdated);
         }
     }
 }
