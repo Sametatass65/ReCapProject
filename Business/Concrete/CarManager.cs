@@ -17,10 +17,10 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class CarManagers : ICarService
+    public class CarManager : ICarService
     {
         ICarDal _carDal;
-        public CarManagers(ICarDal carDal)
+        public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
         }
@@ -52,6 +52,11 @@ namespace Business.Concrete
         public IDataResult<List<CarDto>> GetAllCarDto()
         {
             return new DataSuccessResult<List<CarDto>>(_carDal.getCarDto(), Message.SuccessGet);
+        }
+
+        public IDataResult<Car> GetById(int id)
+        {
+            return new DataSuccessResult<Car>(_carDal.Get(p => p.Id == id),Message.SuccessGet);
         }
 
         public IResult Update(Car car)

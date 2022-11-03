@@ -2,23 +2,25 @@
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarsController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        ICarService _carService;
-        public CarsController(ICarService carService)
+        IUserService _userService;
+
+        public UsersController(IUserService userService)
         {
-            _carService = carService;
+            _userService = userService;
         }
         [HttpGet("getall")]
-        public IActionResult GetAll() {
-            var result = _carService.GetAll();
-            if (result != null) {
+        public IActionResult GetAll()
+        {
+            var result = _userService.GetAll();
+            if (result != null)
+            {
                 return Ok(result);
             }
             return BadRequest(result);
@@ -26,7 +28,7 @@ namespace WebAPI.Controllers
         [HttpGet("getbyid")]
         public IActionResult Get(int Id)
         {
-            var result = _carService.GetById(Id);
+            var result = _userService.Get(Id);
             if (result != null)
             {
                 return Ok(result);
@@ -34,8 +36,9 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpPost("add")]
-        public IActionResult Add(Car car) {
-            var result = _carService.Add(car);
+        public IActionResult Add(User user)
+        {
+            var result = _userService.Add(user);
             if (result != null)
             {
                 return Ok(result);
@@ -44,9 +47,9 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpPost("delete")]
-        public IActionResult Delete(Car car)
+        public IActionResult Delete(User user)
         {
-            var result = _carService.Delete(car);
+            var result = _userService.Delete(user);
             if (result != null)
             {
                 return Ok(result);
@@ -55,9 +58,9 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpPost("update")]
-        public IActionResult update(Car car)
+        public IActionResult update(User user)
         {
-            var result = _carService.Update(car);
+            var result = _userService.Update(user);
             if (result != null)
             {
                 return Ok(result);
