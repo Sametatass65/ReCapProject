@@ -2,6 +2,7 @@
 using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Caching;
 using Core.Aspect.Autofac.Validaiton;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result.Abstract;
@@ -27,6 +28,7 @@ namespace Business.Concrete
         }
         //[ValidationAspect(typeof(CarValidator))]
         [SecuredOperation("adim,add")]
+       
         public IResult Add(Car car)
         {
             //var context = new ValidationContext<Car>(car);//validation kuraqlım var diyorsun
@@ -45,7 +47,7 @@ namespace Business.Concrete
             _carDal.Delete(car);
             return new SuccessResult(Message.SuccessDeleted);
         }
-
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             return new DataSuccessResult<List<Car>>(_carDal.GetAll(),Message.SuccessGet);
